@@ -120,6 +120,12 @@ public class PathFinder
             if (this.BoardCompare(tempBoard) == 0)
             {
                 //go through the closedset to arrange the path
+                this.closedSet.add(tempBoard);
+                for (Board sol : this.closedSet)
+                {
+                    sol.printBoard();
+                    System.out.println("------------------------------------");
+                }
                 break ;
             }
             else
@@ -161,8 +167,6 @@ public class PathFinder
                 boardSort = this.bubbleSort(boardSort);
                 for (Board sorted : boardSort)
                 {
-                    sorted.printBoard();
-                    System.out.println("------------------------------------");
                     this.openSet.add(sorted);
                 }
             }
