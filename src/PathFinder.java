@@ -18,6 +18,16 @@ public class PathFinder
         closedSet = new LinkedList<>();
     }
 
+    public Queue<Board> getClosedSet()
+    {
+        return closedSet;
+    }
+
+    public Queue<Board> getOpenSet()
+    {
+        return openSet;
+    }
+
     private ArrayList <Board> bubbleSort(ArrayList <Board> sortBoard)
     {
         Board tempBoard;
@@ -37,14 +47,19 @@ public class PathFinder
         return sortBoard;
     }
 
-    public Queue<Board> getClosedSet()
+    private void prioritiseOpenset ()
     {
-        return closedSet;
-    }
+        ArrayList <Board> boardSort = new ArrayList<>();
+        while (!this.openSet.isEmpty())
+        {
+            boardSort.add(this.openSet.remove());
+        }
 
-    public Queue<Board> getOpenSet()
-    {
-        return openSet;
+        boardSort = this.bubbleSort(boardSort);
+        for (Board sorted : boardSort)
+        {
+            this.openSet.add(sorted);
+        }
     }
 
     public int BoardCompare(Board tempBoard)
@@ -64,6 +79,7 @@ public class PathFinder
         }
         return (misplaced);
     }
+
 
     private Queue<Board> createChildren (Board tempBoard)
     {
@@ -158,17 +174,7 @@ public class PathFinder
                 }
                 // make this a function
                 this.closedSet.add(tempBoard);
-                ArrayList <Board> boardSort = new ArrayList<>();
-                while (!this.openSet.isEmpty())
-                {
-                    boardSort.add(this.openSet.remove());
-                }
-
-                boardSort = this.bubbleSort(boardSort);
-                for (Board sorted : boardSort)
-                {
-                    this.openSet.add(sorted);
-                }
+                this.prioritiseOpenset();
             }
             deapthOfSearch++;
         }
