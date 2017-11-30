@@ -1,11 +1,10 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
 import java.util.*;
 
 public class PathFinder
 {
-    private Queue<Board> openSet;
-    private Queue<Board> closedSet;
+    private LinkedList<Board> openSet;
+    private LinkedList<Board> closedSet;
+    private LinkedList<Board> solutionSet;
     private final Board startBoard;
     private final Board finalBoard;
 
@@ -14,16 +13,18 @@ public class PathFinder
     {
         this.finalBoard = finalBoard;
         this.startBoard = startBoard;
-        openSet = new LinkedList<>();
-        closedSet = new LinkedList<>();
+        this.openSet = new LinkedList<>();
+        this.closedSet = new LinkedList<>();
+        this.solutionSet = new LinkedList<>();
+
     }
 
-    public Queue<Board> getClosedSet()
+    public LinkedList<Board> getClosedSet()
     {
         return closedSet;
     }
 
-    public Queue<Board> getOpenSet()
+    public LinkedList<Board> getOpenSet()
     {
         return openSet;
     }
@@ -124,10 +125,19 @@ public class PathFinder
         return number;
     }
 
+    private boolean isInSet(Board youngOne)
+    {
+      /*  for (Board compare : this.op)
+        {
+
+        }*/
+        return  true;
+    }
+
     public void solutionPath(/*need to pass a variable that will allow the user to choose the type of heuristics*/)
     {
         Board tempBoard = null;
-        int deapthOfSearch = 0;
+        int depthOfSearch = 0;
 
         this.openSet.add(this.startBoard);
         while (!this.openSet.isEmpty())
@@ -136,8 +146,23 @@ public class PathFinder
             if (this.BoardCompare(tempBoard) == 0)
             {
                 //go through the closedset to arrange the path
-                this.closedSet.add(tempBoard);
-                for (Board sol : this.closedSet)
+                this.closedSet.addFirst(tempBoard);
+                /////////////////////////////////////////////////////////////
+                for (Board solution : this.closedSet)
+                {
+                    if (solution.getParentBoard() == null)
+                    {
+                        this.solutionSet.addFirst(solution);
+                        continue;
+                    }
+                    if (this.solutionSet.contains(solution.getParentBoard()) )
+                    {
+                        continue;
+                    }
+                    this.solutionSet.addFirst(solution);
+                }
+                ////////////////////////////////////////////////////////////
+                for (Board sol : this.solutionSet)
                 {
                     sol.printBoard();
                     System.out.println("------------------------------------");
@@ -148,37 +173,36 @@ public class PathFinder
             {
                 for (Board youngOne : this.createChildren(tempBoard))
                 {
-                   // this.openSet.add(youngOne);
                     if (youngOne == null)
                     {
                         continue;
                     }
 
-                    if (!this.openSet.contains(youngOne) && !this.closedSet.contains(youngOne))
+                    else if (!this.openSet.contains(youngOne) && !this.closedSet.contains(youngOne))
                     {
                         youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
                         youngOne.setParentBoard(tempBoard.getBoard());
-                        youngOne.setDepth(deapthOfSearch + 1);
+                        youngOne.setDepth(depthOfSearch + 1);
                         this.openSet.add(youngOne);
                     }
 
-                    /*else if (this.openSet.contains(youngOne))
+                    else if (this.openSet.contains(youngOne))
                     {
-
+                        System.out.println("Child already on open");
                     }
 
                     else if (this.closedSet.contains(youngOne))
                     {
+
                         System.out.println("Child already on closed");
-                    }*/
+                    }
                 }
-                // make this a function
-                this.closedSet.add(tempBoard);
+                this.closedSet.addFirst(tempBoard);
                 this.prioritiseOpenset();
             }
-            deapthOfSearch++;
+            depthOfSearch++;
         }
-        //tempBoard.printBoard();
+        //misplaced tiles is out by one
     }
 
     public static void main (String [] args)
@@ -194,3 +218,18 @@ public class PathFinder
         pathFinder.solutionPath();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
