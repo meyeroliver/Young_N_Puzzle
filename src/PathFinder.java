@@ -170,6 +170,29 @@ public class PathFinder
         return  true;
     }
 
+    private boolean isInSolutionSet(Board youngOne)
+    {
+        if (this.solutionSet.isEmpty())
+        {
+            return false;
+        }
+
+        for (Board compare : this.solutionSet)
+        {
+            for (int i = 0; i < compare.getBoard().length; i++)
+            {
+                for (int j = 0; j < compare.getBoard().length; j++)
+                {
+                    if (youngOne.getBoard()[i][j] != compare.getBoard()[i][j])
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public void solutionPath(/*need to pass a variable that will allow the user to choose the type of heuristics*/)
     {
         Board tempBoard = null;
@@ -181,21 +204,71 @@ public class PathFinder
             tempBoard = this.openSet.remove();
             if (this.BoardCompare(tempBoard) == 0)
             {
+
+            /*
                 //go through the closedset to arrange the path
                 this.closedSet.addFirst(tempBoard);
                 /////////////////////////////////////////////////////////////
+                int flag = 0;
                 for (Board solution : this.closedSet)
                 {
-                    if (solution.getParentBoard() == null)
+                   /* Board parentBoard = new Board(solution.getParentBoard(), 0 , solution.getBoard());
+
+                    if (flag == 0)
                     {
                         this.solutionSet.addFirst(solution);
-                        continue;
+                        this.solutionSet.addFirst(parentBoard);
+                        flag = 1;
                     }
-                    if (this.solutionSet.contains(solution.getParentBoard()) )
+                    else
                     {
+                        if (solution.getParentBoard() == null)
+                        {
+                            this.solutionSet.addFirst(solution);
+                            continue;
+                        }
+                        if (this.isInSolutionSet(parentBoard))
+                        {
+                            continue;
+                        }
+                        this.solutionSet.addFirst(parentBoard);
+                    }*/
+
+
+               /*     Board parentBoard = new Board(solution.getParentBoard(), 0 , null);
+                    if (flag == 0)
+                    {
+                        this.solutionSet.addFirst(solution);
+                        this.solutionSet.addFirst(parentBoard);
+                        flag = 1;
                         continue;
+
                     }
-                    this.solutionSet.addFirst(solution);
+                    if (this.BoardCompare(parentBoard) == 0)
+                    {
+                        this.solutionSet.addFirst(parentBoard);
+                        break;
+                    }
+                    else
+                    {
+                        if (this.isInSolutionSet(solution) || this.isInSolutionSet(parentBoard))
+                        {
+                            continue;
+                        }
+                        else
+                            this.solutionSet.addFirst(solution);
+                        if (solution.getParentBoard() == null)
+                        {
+                            this.solutionSet.addFirst(solution);
+                            continue;
+                        }
+                        /*if (this.isInSolutionSet(parentBoard))
+                        {
+                            continue;
+                        }
+
+                    }
+
                 }
                 ////////////////////////////////////////////////////////////
                 for (Board sol : this.solutionSet)
@@ -203,7 +276,7 @@ public class PathFinder
                     sol.printBoard();
                     System.out.println("------------------------------------");
                 }
-                break ;
+                break ;*/
             }
             else
             {
@@ -217,8 +290,8 @@ public class PathFinder
                     else if (this.isInOpenSet(youngOne) == false && this.isInClosedSet(youngOne) == false /*!this.openSet.contains(youngOne) && !this.closedSet.contains(youngOne)*/)
                     {
                         youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
-                        youngOne.setParentBoard(tempBoard.getBoard());
-                        youngOne.setDepth(depthOfSearch + 1);
+                        youngOne.setParentBoard(tempBoard.getBoard());//on that specific case
+                        youngOne.setDepth(depthOfSearch);
                         this.openSet.add(youngOne);
                     }
 

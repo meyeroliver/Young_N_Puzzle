@@ -48,12 +48,23 @@ public class Board
 
     public  void printBoard ()
     {
+        System.out.println("Child Board\t\t\tParent Board\n");
         for (int i = 0; i < this.board.length; i++)
         {
             for (int j = 0; j < this.board.length; j++)
             {
-                System.out.print(this.board[i][j] + " ");
+                if (this.parentBoard != null)
+                {
+                    System.out.print(this.board[i][j] + " " + this.board[i][j + 1] + " " + this.board[i][j + 2] + "\t\t\t\t");
+                    System.out.print(this.parentBoard[i][j] + " " + this.parentBoard[i][j + 1] + " " + this.parentBoard[i][j + 2] + " ");
+                }
+                else
+                {
+                    System.out.print(this.board[i][j] + " " + this.board[i][j + 1] + " " + this.board[i][j + 2] + "\t\t\t\t");
+                }
+                break;
             }
+
             System.out.println();
         }
     }
