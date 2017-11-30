@@ -81,7 +81,6 @@ public class PathFinder
         return (misplaced);
     }
 
-
     private Queue<Board> createChildren (Board tempBoard)
     {
         Queue<Board> rugrats = new LinkedList<>();
@@ -125,9 +124,37 @@ public class PathFinder
         return number;
     }
 
-    private boolean isInSet(Board youngOne, LinkedList<Board> complareList)
+    private boolean isInOpenSet(Board youngOne)
     {
-        for (Board compare : complareList)
+        if (this.openSet.isEmpty())
+        {
+            return false;
+        }
+
+        for (Board compare : this.openSet)
+        {
+            for (int i = 0; i < compare.getBoard().length; i++)
+            {
+                for (int j = 0; j < compare.getBoard().length; j++)
+                {
+                    if (youngOne.getBoard()[i][j] != compare.getBoard()[i][j])
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return  true;
+    }
+
+    private boolean isInClosedSet(Board youngOne)
+    {
+        if (this.closedSet.isEmpty())
+        {
+            return false;
+        }
+
+        for (Board compare : this.closedSet)
         {
             for (int i = 0; i < compare.getBoard().length; i++)
             {
@@ -187,7 +214,7 @@ public class PathFinder
                         continue;
                     }
 
-                    else if (!this.openSet.contains(youngOne) && !this.closedSet.contains(youngOne))
+                    else if (this.isInOpenSet(youngOne) == false && this.isInClosedSet(youngOne) == false /*!this.openSet.contains(youngOne) && !this.closedSet.contains(youngOne)*/)
                     {
                         youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
                         youngOne.setParentBoard(tempBoard.getBoard());
@@ -195,12 +222,15 @@ public class PathFinder
                         this.openSet.add(youngOne);
                     }
 
-                    else if (this.openSet.contains(youngOne))
+                    else if (this.isInOpenSet(youngOne) == false)
                     {
-                        System.out.println("Child already on open");
+                        System.out.println("Child already on open\n depth : " + depthOfSearch);
+                        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                        youngOne.printBoard();
+                        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     }
 
-                    else if (this.closedSet.contains(youngOne))
+                    else if (this.isInClosedSet(youngOne) == false)
                     {
 
                         System.out.println("Child already on closed");
