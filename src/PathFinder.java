@@ -282,24 +282,26 @@ public class PathFinder
                         continue;
 
                     }
-                    if (this.BoardCompare(parentBoard) == 0)
+                   if (this.BoardCompare(solution) == 0)
                     {
-                        this.solutionSet.addFirst(parentBoard);
+                    //    this.solutionSet.addFirst(parentBoard);
                         break;
                     }
                     else
                     {
-                        if (this.isInSolutionSet(solution) || this.isInSolutionSet(parentBoard))
+
+                    if (solution.getParentBoard() == null)
+                    {
+                        this.solutionSet.addFirst(solution);
+                        continue;
+                    }
+                        if (this.isInSolutionSet(parentBoard) == true)
                         {
                             continue;
                         }
                         else
-                            this.solutionSet.addFirst(solution);
-                        if (solution.getParentBoard() == null)
-                        {
-                            this.solutionSet.addFirst(solution);
-                            continue;
-                        }
+                            this.solutionSet.addFirst(parentBoard);
+
                         /*if (this.isInSolutionSet(parentBoard))
                         {
                             continue;
@@ -309,7 +311,7 @@ public class PathFinder
 
                 }
                 ////////////////////////////////////////////////////////////
-                for (Board sol : this.closedSet)
+                for (Board sol : this.solutionSet)
                 {
                     sol.printBoard();
                     System.out.println("------------------------------------");
