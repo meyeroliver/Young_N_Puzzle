@@ -125,12 +125,21 @@ public class PathFinder
         return number;
     }
 
-    private boolean isInSet(Board youngOne)
+    private boolean isInSet(Board youngOne, LinkedList<Board> complareList)
     {
-      /*  for (Board compare : this.op)
+        for (Board compare : complareList)
         {
-
-        }*/
+            for (int i = 0; i < compare.getBoard().length; i++)
+            {
+                for (int j = 0; j < compare.getBoard().length; j++)
+                {
+                    if (youngOne.getBoard()[i][j] != compare.getBoard()[i][j])
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
         return  true;
     }
 
