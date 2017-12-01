@@ -81,6 +81,24 @@ public class PathFinder
         return (misplaced);
     }
 
+    public int BoardCompare2(Board youngOne, Board compare)
+    {
+        int misplaced = 0;
+
+        for (int rows = 0; rows < youngOne.getBoard().length; rows++)
+        {
+            for (int cols = 0; cols < youngOne.getBoard()[rows].length; cols++)
+            {
+                if (youngOne.getBoard()[rows][cols] == compare.getBoard()[rows][cols])
+                {
+                    continue;
+                } else
+                    misplaced++;
+            }
+        }
+        return (misplaced);
+    }
+
     private Queue<Board> createChildren (Board tempBoard)
     {
         Queue<Board> rugrats = new LinkedList<>();
@@ -130,43 +148,14 @@ public class PathFinder
         {
             return false;
         }
-
         for (Board compare : this.openSet)
         {
             if (this.BoardCompare2(youngOne, compare) == 0)
             {
                 return true;
             }
-            /*for (int i = 0; i < compare.getBoard().length; i++)
-            {
-                for (int j = 0; j < compare.getBoard().length; j++)
-                {
-                    if (youngOne.getBoard()[i][j] != compare.getBoard()[i][j])
-                    {
-                        return false;
-                    }
-                }
-            }*/
         }
         return  false;
-    }
-
-    public int BoardCompare2(Board youngOne, Board compare)
-    {
-        int misplaced = 0;
-
-        for (int rows = 0; rows < youngOne.getBoard().length; rows++)
-        {
-            for (int cols = 0; cols < youngOne.getBoard()[rows].length; cols++)
-            {
-                if (youngOne.getBoard()[rows][cols] == compare.getBoard()[rows][cols])
-                {
-                    continue;
-                } else
-                    misplaced++;
-            }
-        }
-        return (misplaced);
     }
 
     private boolean isInClosedSet(Board youngOne)
@@ -176,29 +165,12 @@ public class PathFinder
         {
             return false;
         }
-
         for (Board compare : this.closedSet)
         {
             if (this.BoardCompare2(youngOne, compare) == 0)
             {
                 return true;
             }
-            /*for (int i = 0; i < compare.getBoard().length; i++)
-            {
-                for (int j = 0; j < compare.getBoard().length; j++)
-                {
-                    if (youngOne.getBoard()[i][j] != compare.getBoard()[i][j])
-                    {
-                        skip = true;
-                        break;
-                    }
-                }
-                if (skip == true)
-                {
-                    skip = false;
-                    break;
-                }
-            }*/
         }
         return  false;
     }
@@ -209,24 +181,12 @@ public class PathFinder
         {
             return false;
         }
-
         for (Board compare : this.solutionSet)
         {
             if (this.BoardCompare2(youngOne, compare) == 0)
             {
                 return true;
             }
-            /*
-            for (int i = 0; i < compare.getBoard().length; i++)
-            {
-                for (int j = 0; j < compare.getBoard().length; j++)
-                {
-                    if (youngOne.getBoard()[i][j] != compare.getBoard()[i][j])
-                    {
-                        return false;
-                    }
-                }
-            }*/
         }
         return false;
     }
@@ -250,29 +210,6 @@ public class PathFinder
                 int flag = 0;
                 for (Board solution : this.closedSet)
                 {
-                   /* Board parentBoard = new Board(solution.getParentBoard(), 0 , solution.getBoard());
-
-                    if (flag == 0)
-                    {
-                        this.solutionSet.addFirst(solution);
-                        this.solutionSet.addFirst(parentBoard);
-                        flag = 1;
-                    }
-                    else
-                    {
-                        if (solution.getParentBoard() == null)
-                        {
-                            this.solutionSet.addFirst(solution);
-                            continue;
-                        }
-                        if (this.isInSolutionSet(parentBoard))
-                        {
-                            continue;
-                        }
-                        this.solutionSet.addFirst(parentBoard);
-                    }*/
-
-
                     Board parentBoard = new Board(solution.getParentBoard(), 0 , null);
                     if (flag == 0)
                     {
@@ -282,33 +219,24 @@ public class PathFinder
                         continue;
 
                     }
-                   if (this.BoardCompare(solution) == 0)
+                    if (this.BoardCompare(solution) == 0)
                     {
-                    //    this.solutionSet.addFirst(parentBoard);
+                        this.solutionSet.addFirst(parentBoard);
                         break;
                     }
                     else
                     {
-
-                    if (solution.getParentBoard() == null)
-                    {
-                        this.solutionSet.addFirst(solution);
-                        continue;
-                    }
+                        if (solution.getParentBoard() == null)
+                        {
+                            continue;
+                        }
                         if (this.isInSolutionSet(parentBoard) == true)
                         {
                             continue;
                         }
                         else
                             this.solutionSet.addFirst(parentBoard);
-
-                        /*if (this.isInSolutionSet(parentBoard))
-                        {
-                            continue;
-                        }*/
-
                     }
-
                 }
                 ////////////////////////////////////////////////////////////
                 for (Board sol : this.solutionSet)
@@ -337,16 +265,12 @@ public class PathFinder
 
                     else if (this.isInOpenSet(youngOne) == true)
                     {
-                        System.out.println("Child already on open\n depth : " + depthOfSearch);
-                        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-                        youngOne.printBoard();
-                        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                        //ask nhlakanipho what should occour here
                     }
 
                     else if (this.isInClosedSet(youngOne) == true)
                     {
-
-                      //  System.out.println("Child already on closed");
+                        //ask nhlakanipho what should occour here
                     }
                 }
                 this.closedSet.addFirst(tempBoard);
@@ -354,7 +278,6 @@ public class PathFinder
             }
             depthOfSearch++;
         }
-        //misplaced tiles is out by one
     }
 
     public static void main (String [] args)
