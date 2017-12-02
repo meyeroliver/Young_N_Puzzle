@@ -82,7 +82,7 @@ public class Solvable
         }
     }
 
-    public static void main (String [] args)
+    /*public static void main (String [] args)
     {
         int puzzle[][] = {{1,2,3,4,5}
                         , {6,7,8,9,10}
@@ -92,5 +92,5 @@ public class Solvable
         Board board = new Board(puzzle, 0, null);
         Solvable solvable = new Solvable(board);
         System.out.println(solvable.isSolvable());
-    }
+    }*/
 }

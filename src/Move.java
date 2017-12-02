@@ -141,7 +141,7 @@ public class Move
         }
     }
 
-    public static void main (String [] args)
+  /*  public static void main (String [] args)
     {
         int puzzle[][] = {{2,1,6}
                          ,{5,0,4}
@@ -163,7 +163,7 @@ public class Move
         System.out.println();
         System.out.println("option 4");
         mover.printPuzzle(mover.moveDown(puzzleBoard));
-    }
+    }*/
 
 
 }

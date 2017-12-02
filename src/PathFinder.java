@@ -55,7 +55,6 @@ public class PathFinder
         {
             boardSort.add(this.openSet.remove());
         }
-
         boardSort = this.bubbleSort(boardSort);
         for (Board sorted : boardSort)
         {
@@ -129,7 +128,7 @@ public class PathFinder
 
         if (choice == 1)
         {
-            number = heuristics.MisplacedTiles(youngOne.getBoard(), this.finalBoard.getBoard());//the heuristeic class needs to use board
+            number = heuristics.MisplacedTiles(youngOne.getBoard(), this.finalBoard.getBoard()) + youngOne.getDepth();
         }
         else if (choice == 2)
         {
@@ -193,22 +192,143 @@ public class PathFinder
 
     public void solutionPath(/*need to pass a variable that will allow the user to choose the type of heuristics*/)
     {
-        Board tempBoard = null;
-        int depthOfSearch = 0;
-
+        Board tempBoard;
+        this.startBoard.setDepth(0);
         this.openSet.add(this.startBoard);
         while (!this.openSet.isEmpty())
         {
             tempBoard = this.openSet.remove();
+            /**********************************************************************************************************/
+            /*Board tempBoardParent =  new Board(tempBoard.getParentBoard(), 0, null);
+            if (tempBoardParent.getBoard() != null)
+            {
+                if (this.BoardCompare2(tempBoardParent ,this.closedSet.peek()) != 0)
+                {
+                    /*System.out.println("no match\n");
+                    tempBoard.printBoard();
+                    System.out.println("-----------------------------------------------------------------");
+                    closedSet.peek().printBoard();
+                    System.exit(0);*/
+
+                    /*System.out.println("-----------------------------------------------------------------");
+                    for (Board printClosedSet : closedSet)
+                    {
+                        printClosedSet.printBoard();
+                        System.out.println();
+                    }*/
+               /*     this.closedSet.removeAll(this.closedSet);
+                    Board rePop = tempBoard;
+                    Board rePopParent =  new Board(rePop.getParentBoard(), 0, null);
+                    this.closedSet.add(tempBoard);
+                    while (rePopParent.getBoard() != null)
+                    {
+                        this.closedSet.add(rePopParent);
+                        rePopParent =  new Board(rePop.getParentBoard(), 0, null);
+                    }
+                    System.exit(0);
+                }
+            }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /**********************************************************************************************************/
             if (this.BoardCompare(tempBoard) == 0)
             {
-
-
-                //go through the closedset to arrange the path
                 this.closedSet.addFirst(tempBoard);
-                /////////////////////////////////////////////////////////////
                 int flag = 0;
-                for (Board solution : this.closedSet)
+                ListIterator<Board> listIterator = this.closedSet.listIterator();
+                int i = 0;
+                while(listIterator.hasNext())
+                {
+                    Board solution = listIterator.next();
+                    if (this.BoardCompare(solution) == 0)
+                    {
+                        this.solutionSet.addFirst(solution);
+                        this.solutionSet.addFirst(listIterator.next());
+                        listIterator.previous().printBoard();
+                        continue;
+                    }
+                    else
+                    {
+                        if (solution.getParentBoard() == null)
+                        {
+                            this.solutionSet.addFirst(solution);
+                        }
+                        else
+                        {
+                            Board parentBoard = new Board(solution.getParentBoard(), 0 , null);
+                            Board nextStep;
+                            while (this.BoardCompare2(parentBoard, nextStep = listIterator.next()) != 0);
+                            this.solutionSet.addFirst(nextStep);
+                            listIterator.previous();
+                        }
+
+                    }
+                }
+
+                /*for (Board solution : this.closedSet)
                 {
                     Board parentBoard = new Board(solution.getParentBoard(), 0 , null);
                     if (flag == 0)
@@ -217,7 +337,6 @@ public class PathFinder
                         this.solutionSet.addFirst(parentBoard);
                         flag = 1;
                         continue;
-
                     }
                     if (this.BoardCompare(solution) == 0)
                     {
@@ -237,12 +356,12 @@ public class PathFinder
                         else
                             this.solutionSet.addFirst(parentBoard);
                     }
-                }
-                ////////////////////////////////////////////////////////////
+                }*/
+                 i = 0;
                 for (Board sol : this.solutionSet)
                 {
                     sol.printBoard();
-                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------" + i++);
                 }
                 break ;
             }
@@ -255,42 +374,81 @@ public class PathFinder
                         continue;
                     }
 
-                    else if (this.isInOpenSet(youngOne) == false && this.isInClosedSet(youngOne) == false /*!this.openSet.contains(youngOne) && !this.closedSet.contains(youngOne)*/)
+                    else if (this.isInOpenSet(youngOne) == false && this.isInClosedSet(youngOne) == false)
                     {
+                        youngOne.setDepth(tempBoard.getDepth() + 1);
                         youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
-                        youngOne.setParentBoard(tempBoard.getBoard());//on that specific case
-                        youngOne.setDepth(depthOfSearch);
+                        youngOne.setParentBoard(tempBoard.getBoard());
                         this.openSet.add(youngOne);
                     }
 
                     else if (this.isInOpenSet(youngOne) == true)
                     {
-                        //ask nhlakanipho what should occour here
+                        youngOne.setDepth(tempBoard.getDepth() + 1);
+                        youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
+                        youngOne.setParentBoard(tempBoard.getBoard());
+
+                        for (Board inOpen : this.openSet)
+                        {
+                            if (this.BoardCompare2(youngOne, inOpen) == 0)
+                            {
+                                if (youngOne.getHeuristic() + youngOne.getDepth() < inOpen.getHeuristic() + inOpen.getDepth())
+                                {
+                                    this.openSet.remove(inOpen);
+                                    this.openSet.add(youngOne);
+                                }
+                            }
+                        }
                     }
 
                     else if (this.isInClosedSet(youngOne) == true)
                     {
-                        //ask nhlakanipho what should occour here
+                        youngOne.setDepth(tempBoard.getDepth() + 1);
+                        youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
+                        youngOne.setParentBoard(tempBoard.getBoard());
+
+                        for (Board inClosed : this.closedSet)
+                        {
+                            if (this.BoardCompare2(youngOne, inClosed) == 0)
+                            {
+                                if (youngOne.getHeuristic() + youngOne.getDepth() < inClosed.getHeuristic() + inClosed.getDepth())
+                                {
+                                    this.openSet.add(youngOne);
+                                }
+                            }
+                        }
                     }
                 }
                 this.closedSet.addFirst(tempBoard);
                 this.prioritiseOpenset();
             }
-            depthOfSearch++;
+            //depthOfSearch++;
         }
     }
 
     public static void main (String [] args)
     {
-        int puzzle[][] = {{2, 8, 3}
-                        , {1, 6, 4}
-                        , {7, 0, 5}};
+        int puzzle[][] = {{1, 2, 3}
+                        , {4, 5, 6}
+                        , {8, 7, 0}};
 
         Board board = new Board(puzzle, 0, null);
 
-        SnailSolution snailSolution =   new SnailSolution();
+        Solvable solvable = new Solvable(board);
+        if (solvable.isSolvable() == true)
+        {
+            SnailSolution snailSolution =   new SnailSolution();
+            PathFinder pathFinder = new PathFinder(board, snailSolution.get_snail_sol(puzzle));
+            pathFinder.solutionPath();
+        }
+        else
+        {
+            System.err.println("This puzzle has no solution");
+        }
+
+        /*SnailSolution snailSolution =   new SnailSolution();
         PathFinder pathFinder = new PathFinder(board, snailSolution.get_snail_sol(puzzle));
-        pathFinder.solutionPath();
+        pathFinder.solutionPath();*/
     }
 }
 
