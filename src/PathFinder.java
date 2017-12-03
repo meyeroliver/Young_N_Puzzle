@@ -260,7 +260,9 @@ public class PathFinder
 
                     else if (this.isInOpenSet(youngOne) == true)
                     {
-                        /*youngOne.setDepth(tempBoard.getDepth() + 1);
+                        System.out.println(where++);
+                        /*
+                        youngOne.setDepth(tempBoard.getDepth() + 1);
                         youngOne.setHeuristic(this.userHeuristicChoice(1, youngOne));
                         youngOne.setParentBoard(tempBoard.getBoard());
                         countOpen++;
@@ -272,12 +274,13 @@ public class PathFinder
                             }
                             if (this.BoardCompare2(youngOne, inOpen) == 0)
                             {
-                                if (youngOne.getHeuristic() + youngOne.getDepth() < inOpen.getHeuristic() + inOpen.getDepth())
+                                if (youngOne.getHeuristic()  < inOpen.getHeuristic())
                                 {
-                                    this.openSet.remove(inOpen);
+                                    this.openSet.removeLast();
                                     this.openSet.add(youngOne);
                                     where = 0;
                                     break;
+
                                 }
                             }
                         }*/
@@ -293,9 +296,10 @@ public class PathFinder
                         {
                             if (this.BoardCompare2(youngOne, inClosed) == 0)
                             {
-                                if (youngOne.getHeuristic() + youngOne.getDepth() < inClosed.getHeuristic() + inClosed.getDepth())
+                                if (youngOne.getHeuristic() < inClosed.getHeuristic())
                                 {
                                     this.openSet.add(youngOne);
+                                    break;
                                 }
                             }
                         }*/
@@ -309,10 +313,11 @@ public class PathFinder
 
     public static void main (String [] args)
     {
-        int puzzle[][] = {{1, 2, 3, 4}
-                        , {5, 6, 7, 8}
-                        , {9, 10, 11, 12}
-                        , {13, 14, 15, 0}};
+        int puzzle[][] = {{1, 2, 3, 4, 5}
+                        , {6, 7, 8, 9, 10}
+                        , {11, 12, 13, 14, 15}
+                        , {16, 17, 18, 19, 20}
+                        , {21, 22, 24, 23, 0}};
 
         Board board = new Board(puzzle, 0, null);
 

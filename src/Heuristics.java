@@ -47,16 +47,10 @@ public class Heuristics
         return (misplaced);
     }
 
-    private int rowAndColumn(int[][] puzzleState)
+    private int rowAndColumn(int[][] puzzleState, int[][] solution)
         {
             int wrongRow = 0;
             int wrongCol = 0;
-            int[][] solution = {
-                    {1,  2,  3,  4},
-                    {12, 13, 14, 5},
-                    {11,  0, 15, 6},
-                    {10,  9,  8, 7}
-            };
 
             for (int i = 0; i < puzzleState.length; i++)
             {
@@ -72,19 +66,16 @@ public class Heuristics
                                 {
                                     if (i != row && j != col)
                                     {
-                                        System.out.println(puzzleState[i][j] + " found on wrong column and row");
                                         wrongRow++;
                                         wrongCol++;
                                     }
                                     else if (i == row)
                                     {
-                                        System.out.println(puzzleState[i][j] + " found on wrong column");
-                                        wrongCol++;
+                                       wrongCol++;
                                     }
                                     else if (j == col)
                                     {
-                                        System.out.println(puzzleState[i][j] + " found on wrong row");
-                                        wrongRow++;
+                                       wrongRow++;
                                     }
                                 }
                             }
@@ -95,17 +86,5 @@ public class Heuristics
             return (wrongCol + wrongRow);
         }
 
-    public static void main (String [] args)
-    {
-        int puzzle[][] = {{0,8,3}
-                        ,{1,2,4}
-                        ,{7,6,5}};
 
-        int solved[][] = {{1,2,3}
-                        ,{8,0,4}
-                        ,{7,6,5}};
-
-        Heuristics heuristics = new Heuristics();
-        System.out.println(heuristics.ManhattanDistance(puzzle, solved));
-    }
 }
