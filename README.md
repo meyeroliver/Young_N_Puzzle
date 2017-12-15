@@ -7,10 +7,24 @@ also depends on the heuristics use. This was a team project and the heuristics w
 2) Manhattan Distance
 3) Rows and Columns
 
-The goal of this project is to solve the N-puzzle game using the A* search algorithm or one of its variants.
-You start with a square board made up of N*N cells. One of these cells will be empty,
-the others will contain numbers, starting from 1, that will be unique in this instance of
-the puzzle.
+How to run Program.
 
-Your search algorithm will have to find a valid sequence of moves in order to reach the
-final state, a.k.a the "snail solution/spiral solution" 
+1) cd into src.
+2) To compile enter the following in the command line "javac -g *.java".
+3) To run the progrm enter in the following in the command line "java Main".
+4) Next, user will be prompted to enter in the a file. Please enter in the absolute path.
+  * There are given files in the root.
+  * Also, there is a python file "npuzzle-gen.py" that te user can use to generate a puzzle.
+    -> How to run "npuzzle-gen.py"
+    4.1) Enter following into the terminal "python npuzzle-gen.py -h", this will list all the commands the user can execute.
+    *  Python npuzzle-gen.py 3 -s "creates solvable 3x3 puzzle"
+    *  Python npuzzle-gen.py 3 -u "creates unsolvable 3x3 puzzle"
+    4.2) Copy output generated and paste into textfile.
+    4.3) Go back to 3). 
+5) Next, user will be prompted to choose a heuristic.
+6) Depending on whether the puzzle is solvable. It will generate the solution in steps.
+
+Disclaimer.
+
+The npuzzle-gen.py is not of my creation.
+Also its best to run with 3x3 puzzle. Anything bigger will require you to run over lunch.
